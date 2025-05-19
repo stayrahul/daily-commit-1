@@ -25,7 +25,7 @@ jobs:
           # Check if the file exists
           if [ ! -f "$FILE" ]; then
             echo "Hello, my name is Rahul" > "$FILE"
-            echo "commit number: 1" >> "$FILE"
+            echo "commit number: 6" >> "$FILE"
           else
             # Read the current commit number and increment it
             CURRENT_COUNT=$(grep -oP 'commit number: \K\d+' "$FILE" || echo 0)

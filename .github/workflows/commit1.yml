@@ -3,7 +3,7 @@ name: Rahul's Daily Commit
 on:
   schedule:
     # Run at 4:15 PM UTC which is 10:00 PM NPT (Nepali Standard Time)
-    - cron: "15 16 * * *" # 4:15 PM UTC corresponds to 10:00 PM NPT
+    - cron: "15 17 * * *" # 4:15 PM UTC corresponds to 10:00 PM NPT
 
 jobs:
   commit:
@@ -29,7 +29,7 @@ jobs:
           else
             # Read the current commit number and increment it
             CURRENT_COUNT=$(grep -oP 'commit number: \K\d+' "$FILE" || echo 0)
-            NEXT_COUNT=$((CURRENT_COUNT + 1))
+            NEXT_COUNT=$((CURRENT_COUNT + 5))
             sed -i "/commit number: /c\commit number: $NEXT_COUNT" "$FILE"
           fi
 

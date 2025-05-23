@@ -1,30 +1,21 @@
-name: Auto Commit Bot
+name: Auto Commit
 
 on:
   schedule:
-    - cron: "0 0 * * *"  # Every day at midnight UTC
-  workflow_dispatch:     # Allow manual runs too
+    - cron: '0 0 * * *' # runs daily at midnight UTC
+  workflow_dispatch:
 
 jobs:
-  commit-bot:
+  auto-commit:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout the repo
-        uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-      - name: Set up Git
+      - name: Make an empty commit
         run: |
-          git config --global user.name "stayrahul"
-          git config --global user.email "rahul7926963@gmail.com"
-
-      - name: Generate 30 commits
-        run: |
-          for i in {1..30}
-          do
-            echo "$(date) - commit $i" >> bot_log.txt
-            git add bot_log.txt
-            git commit -m "Bot commit $i on $(date)"
-            sleep 1  # Delay to avoid anti-spam detection
-          done
+          git config user.name "stayrahul-bot"
+          git config user.email "rahul7926963@gmail.com"
+          git commit --allow-empty -m "🤖 Auto commit"
           git push

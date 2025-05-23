@@ -1,39 +1,30 @@
-name: Rahul's Daily Commit
+name: Auto Commit Bot
 
 on:
   schedule:
-    # Run at 4:15 PM UTC which is 10:00 PM NPT (Nepali Standard Time)
-    - cron: "15 17 * * *" # 4:15 PM UTC corresponds to 10:00 PM NPT
+    - cron: "0 0 * * *"  # Every day at midnight UTC
+  workflow_dispatch:     # Allow manual runs too
 
 jobs:
-  commit:
+  commit-bot:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-        with:
-          ref: main
+      - name: Checkout the repo
+        uses: actions/checkout@v4
 
-      - name: Update or create file
+      - name: Set up Git
         run: |
-          set -e
           git config --global user.name "stayrahul"
           git config --global user.email "rahul7926963@gmail.com"
-          FILE="commit_number.md"
 
-          # Check if the file exists
-          if [ ! -f "$FILE" ]; then
-            echo "Hello, my name is Rahul" > "$FILE"
-            echo "commit number: 6" >> "$FILE"
-          else
-            # Read the current commit number and increment it
-            CURRENT_COUNT=$(grep -oP 'commit number: \K\d+' "$FILE" || echo 0)
-            NEXT_COUNT=$((CURRENT_COUNT + 5))
-            sed -i "/commit number: /c\commit number: $NEXT_COUNT" "$FILE"
-          fi
-
-          # Add the file and commit the changes
-          git add "$FILE"
-          git commit -m "Updated commit number to $NEXT_COUNT"
+      - name: Generate 30 commits
+        run: |
+          for i in {1..30}
+          do
+            echo "$(date) - commit $i" >> bot_log.txt
+            git add bot_log.txt
+            git commit -m "Bot commit $i on $(date)"
+            sleep 1  # Delay to avoid anti-spam detection
+          done
           git push
